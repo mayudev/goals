@@ -35,10 +35,18 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: TodoList(
           todos: todos,
-          onSwitched: (index) {
-            setState(() {
-              todos[index].done = !todos[index].done;
-            });
+          onUpdated: (index, action) {
+            switch (action) {
+              case TodoAction.mark:
+                setState(() {
+                  todos[index].done = !todos[index].done;
+                });
+                break;
+              case TodoAction.delete:
+                setState(() {
+                  todos.removeAt(index);
+                });
+            }
           },
         ),
       ),

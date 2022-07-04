@@ -4,6 +4,11 @@ enum Result {
   created,
 }
 
+enum TodoAction {
+  mark,
+  delete,
+}
+
 class TodoUpdate {
   final Result result;
   final String? content;
