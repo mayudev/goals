@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:goals/model/new_todo.dart';
 import 'package:goals/model/todo.dart';
 import 'package:goals/theme.dart';
+import 'package:goals/widgets/calendar.dart';
 import 'package:goals/widgets/new_todo.dart';
 import 'package:goals/widgets/todo_list.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.updateTheme}) : super(key: key);
@@ -33,24 +35,31 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Goals'),
       ),
       body: Center(
-        child: TodoList(
-          todos: todos,
-          onUpdated: (index, action) {
-            switch (action) {
-              case TodoAction.mark:
-                setState(() {
-                  todos[index].done = !todos[index].done;
-                });
-                break;
-              case TodoAction.delete:
-                setState(() {
-                  todos.removeAt(index);
-                });
-                break;
-              case TodoAction.edit:
-                _editTodo(index);
-            }
-          },
+        child: Column(
+          children: [
+            Calendar(),
+            Expanded(
+              child: TodoList(
+                todos: todos,
+                onUpdated: (index, action) {
+                  switch (action) {
+                    case TodoAction.mark:
+                      setState(() {
+                        todos[index].done = !todos[index].done;
+                      });
+                      break;
+                    case TodoAction.delete:
+                      setState(() {
+                        todos.removeAt(index);
+                      });
+                      break;
+                    case TodoAction.edit:
+                      _editTodo(index);
+                  }
+                },
+              ),
+            )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
