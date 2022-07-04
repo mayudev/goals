@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:goals/model/new_todo.dart';
 
 class NewTodo extends StatefulWidget {
-  const NewTodo({Key? key}) : super(key: key);
+  const NewTodo({Key? key, this.initial}) : super(key: key);
+
+  final String? initial;
 
   @override
   State<NewTodo> createState() => _NewTodoState();
@@ -15,6 +17,14 @@ class _NewTodoState extends State<NewTodo> {
   void dispose() {
     _value.dispose();
     super.dispose();
+  }
+
+  void initState() {
+    super.initState();
+
+    if (widget.initial != null) {
+      _value.text = widget.initial!;
+    }
   }
 
   void submit() {
@@ -47,7 +57,7 @@ class _NewTodoState extends State<NewTodo> {
         Container(
           padding: const EdgeInsets.only(top: 20.0, left: 20.0, bottom: 20.0),
           child: Text(
-            'Enter a new task',
+            widget.initial == null ? 'Enter a new task' : 'Edit task',
             style: Theme.of(context).textTheme.labelLarge!.copyWith(
                   fontSize: 20.0,
                 ),
@@ -80,11 +90,12 @@ class _NewTodoState extends State<NewTodo> {
       margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
       child: Row(
         children: [
-          IconButton(
-            onPressed: () => delete(),
-            icon: const Icon(Icons.delete_forever),
-            color: Theme.of(context).primaryColor,
-          ),
+          if (widget.initial != null)
+            IconButton(
+              onPressed: () => delete(),
+              icon: const Icon(Icons.delete_forever),
+              color: Theme.of(context).colorScheme.primary,
+            ),
           Expanded(
             child: TextButton(
               onPressed: () => submit(),

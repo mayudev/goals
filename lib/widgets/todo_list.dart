@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:goals/model/new_todo.dart';
 import 'package:goals/model/todo.dart';
 import 'package:goals/widgets/tile.dart';
@@ -21,12 +22,18 @@ class TodoList extends StatelessWidget {
           onDismissed: (direction) {
             onUpdated(index, TodoAction.delete);
           },
-          child: TodoListTile(
-              title: item.title,
-              done: item.done,
-              onChanged: () {
-                onUpdated(index, TodoAction.mark);
-              }),
+          child: GestureDetector(
+            onLongPress: () {
+              HapticFeedback.lightImpact();
+              onUpdated(index, TodoAction.edit);
+            },
+            child: TodoListTile(
+                title: item.title,
+                done: item.done,
+                onChanged: () {
+                  onUpdated(index, TodoAction.mark);
+                }),
+          ),
         );
       },
     );

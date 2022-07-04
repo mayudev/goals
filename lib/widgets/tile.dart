@@ -16,9 +16,24 @@ class TodoListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
-      title: Text(title),
+      title: Text(
+        title,
+        style: _checkboxStyle(done),
+      ),
       value: done,
+      checkboxShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25),
+      ),
       onChanged: (state) => onChanged(),
     );
+  }
+
+  TextStyle _checkboxStyle(bool done) {
+    if (done) {
+      return const TextStyle(
+        decoration: TextDecoration.lineThrough,
+      );
+    } else
+      return TextStyle();
   }
 }

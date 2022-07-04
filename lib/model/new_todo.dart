@@ -6,6 +6,7 @@ enum Result {
 
 enum TodoAction {
   mark,
+  edit,
   delete,
 }
 

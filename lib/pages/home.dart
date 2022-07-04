@@ -46,6 +46,9 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   todos.removeAt(index);
                 });
+                break;
+              case TodoAction.edit:
+                _editTodo(index);
             }
           },
         ),
@@ -59,6 +62,37 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _addTodo() async {
+    final todo = await _showTodoModal();
+
+    if (todo?.content != null) {
+      setState(() {
+        final newTodo = Todo(done: false, title: todo!.content!);
+        todos.add(newTodo);
+      });
+    }
+  }
+
+  Future<void> _editTodo(int index) async {
+    final item = todos[index];
+
+    final result = await _showTodoModal(initial: item.title);
+
+    if (result?.result == Result.created && result?.content != null) {
+      setState(() {
+        final newTodo = Todo(
+          title: result!.content!,
+          done: item.done,
+        );
+        todos[index] = newTodo;
+      });
+    } else if (result?.result == Result.deleted) {
+      setState(() {
+        todos.removeAt(index);
+      });
+    }
+  }
+
+  Future<TodoUpdate?> _showTodoModal({String? initial}) async {
     final TodoUpdate? todo = await showModalBottomSheet(
       context: context,
       elevation: 5,
@@ -72,19 +106,21 @@ class _HomePageState extends State<HomePage> {
       builder: (context) {
         return Padding(
           padding: MediaQuery.of(context).viewInsets,
-          child: const NewTodo(),
+          child: NewTodo(initial: initial),
         );
       },
     );
 
-    if (todo?.content != null) {
+    return todo;
+
+    /* if (todo?.content != null) {
       setState(() {
         final newTodo = Todo(done: false, title: todo!.content!);
         todos.add(newTodo);
       });
     }
 
-    print(todo?.content);
+    print(todo?.content); */
   }
 
   Future<void> _selectTheme() async {
