@@ -1,0 +1,15 @@
+enum Result {
+  none,
+  deleted,
+  created,
+}
+
+class TodoUpdate {
+  final Result result;
+  final String? content;
+
+  TodoUpdate({
+    required this.result,
+    this.content,
+  });
+}

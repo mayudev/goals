@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goals/model/todo.dart';
-import 'package:goals/pages/tile.dart';
+import 'package:goals/widgets/tile.dart';
 
 class TodoList extends StatelessWidget {
   const TodoList({Key? key, required this.todos, required this.onSwitched})

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:goals/widgets/home.dart';
+import 'package:goals/pages/home.dart';
 import 'package:goals/theme.dart';
 
 void main() {

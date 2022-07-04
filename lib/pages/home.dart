@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:goals/model/new_todo.dart';
 import 'package:goals/model/todo.dart';
 import 'package:goals/theme.dart';
-import 'package:goals/pages/todo_list.dart';
+import 'package:goals/widgets/new_todo.dart';
+import 'package:goals/widgets/todo_list.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.updateTheme}) : super(key: key);
@@ -13,14 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   final List<Todo> todos = [
     Todo(title: 'Done', done: false),
   ];
@@ -49,11 +43,40 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _addTodo,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> _addTodo() async {
+    final TodoUpdate? todo = await showModalBottomSheet(
+      context: context,
+      elevation: 5,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12.0),
+          topRight: Radius.circular(12.0),
+        ),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: const NewTodo(),
+        );
+      },
+    );
+
+    if (todo?.content != null) {
+      setState(() {
+        final newTodo = Todo(done: false, title: todo!.content!);
+        todos.add(newTodo);
+      });
+    }
+
+    print(todo?.content);
   }
 
   Future<void> _selectTheme() async {
