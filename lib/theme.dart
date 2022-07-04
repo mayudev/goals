@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-ThemeData buildLightTheme() {
-  var base = ThemeData();
+var fontFamily = 'Finlandica';
 
+ThemeData buildLightTheme() {
+  var base = ThemeData(fontFamily: fontFamily);
   return base.copyWith(
     brightness: Brightness.light,
     colorScheme: const ColorScheme.light().copyWith(
@@ -18,6 +19,8 @@ ThemeData buildDarkTheme() {
   var base = ThemeData.dark();
 
   return base.copyWith(
+    textTheme: ThemeData.dark().textTheme.apply(fontFamily: fontFamily),
+    primaryTextTheme: ThemeData.dark().textTheme.apply(fontFamily: fontFamily),
     brightness: Brightness.dark,
     appBarTheme: const AppBarTheme().copyWith(
       backgroundColor: const Color(0xff723539),
