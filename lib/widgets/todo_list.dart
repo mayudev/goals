@@ -18,6 +18,7 @@ class TodoList extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = todos[index];
         return Dismissible(
+          background: Container(color: Theme.of(context).colorScheme.primary),
           key: Key(item.title),
           onDismissed: (direction) {
             onUpdated(index, TodoAction.delete);
