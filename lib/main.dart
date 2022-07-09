@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:goals/pages/home.dart';
 import 'package:goals/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(GoalsApp(
     theme: ThemeOption.light,
   ));

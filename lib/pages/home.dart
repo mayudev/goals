@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:goals/model/database.dart';
 import 'package:goals/model/new_todo.dart';
 import 'package:goals/model/todo.dart';
 import 'package:goals/model/todos.dart';
@@ -19,10 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final todoState =
-      TodoState(); /* [
-    Todo(title: 'Done', date: DateTime.utc(2022, 7, 9), done: false),
-  ]; */
+  final todoState = TodoState();
 
   late DateTime selectedDate;
 
@@ -34,10 +32,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    initTodos();
+
     final now = DateTime.now();
     selectedDate = DateTime.utc(now.year, now.month, now.day);
 
     super.initState();
+  }
+
+  void initTodos() async {
+    final todos = await TodoHelper.getTodos();
+
+    setState(() {
+      todoState.set(todos);
+    });
   }
 
   @override
@@ -101,9 +109,10 @@ class _HomePageState extends State<HomePage> {
     final todo = await _showTodoModal();
 
     if (todo?.content != null) {
+      final newTodo =
+          Todo(id: 0, done: false, date: selectedDate, title: todo!.content!);
+
       setState(() {
-        final newTodo =
-            Todo(done: false, date: selectedDate, title: todo!.content!);
         todoState.addItem(newTodo);
       });
     }
@@ -117,6 +126,7 @@ class _HomePageState extends State<HomePage> {
     if (result?.result == Result.created && result?.content != null) {
       setState(() {
         final newTodo = Todo(
+          id: item.id,
           title: result!.content!,
           date: item.date,
           done: item.done,
