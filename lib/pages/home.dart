@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:goals/model/new_todo.dart';
 import 'package:goals/model/todo.dart';
@@ -17,10 +19,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Todo> todos = [
-    Todo(title: 'Done', done: false),
+    Todo(title: 'Done', date: DateTime.utc(2022, 7, 9), done: false),
   ];
 
   late DateTime selectedDate;
+
+  UnmodifiableListView<Todo> get filteredTodos {
+    return UnmodifiableListView(
+        todos.where((element) => element.date == selectedDate).toList());
+  }
 
   @override
   void initState() {
@@ -56,8 +63,9 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: TodoList(
-                todos: todos,
+                todos: filteredTodos,
                 onUpdated: (index, action) {
+                  index = todos.indexOf(filteredTodos[index]);
                   switch (action) {
                     case TodoAction.mark:
                       setState(() {
@@ -91,7 +99,8 @@ class _HomePageState extends State<HomePage> {
 
     if (todo?.content != null) {
       setState(() {
-        final newTodo = Todo(done: false, title: todo!.content!);
+        final newTodo =
+            Todo(done: false, date: selectedDate, title: todo!.content!);
         todos.add(newTodo);
       });
     }
@@ -106,6 +115,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         final newTodo = Todo(
           title: result!.content!,
+          date: item.date,
           done: item.done,
         );
         todos[index] = newTodo;

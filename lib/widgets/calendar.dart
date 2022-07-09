@@ -30,10 +30,15 @@ class Calendar extends StatelessWidget {
         weekdayStyle: TextStyle(),
       ),
       calendarStyle: CalendarStyle(
-        isTodayHighlighted: false,
         selectedDecoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary,
           shape: BoxShape.circle,
+        ),
+        todayDecoration: BoxDecoration(
+          shape: BoxShape.circle,
+        ),
+        todayTextStyle: TextStyle(
+          color: Theme.of(context).colorScheme.primary,
         ),
         weekendTextStyle: const TextStyle(),
         holidayTextStyle: const TextStyle(),
