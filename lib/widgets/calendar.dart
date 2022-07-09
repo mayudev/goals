@@ -25,6 +25,10 @@ class Calendar extends StatelessWidget {
       selectedDayPredicate: (day) {
         return day == selectedDate;
       },
+      daysOfWeekStyle: const DaysOfWeekStyle(
+        weekendStyle: TextStyle(),
+        weekdayStyle: TextStyle(),
+      ),
       calendarStyle: CalendarStyle(
         isTodayHighlighted: false,
         selectedDecoration: BoxDecoration(
