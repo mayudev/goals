@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:goals/model/new_todo.dart';
 import 'package:goals/model/todo.dart';
+import 'package:goals/model/todos.dart';
 import 'package:goals/theme.dart';
 import 'package:goals/widgets/calendar.dart';
 import 'package:goals/widgets/new_todo.dart';
@@ -18,15 +19,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Todo> todos = [
+  final todoState =
+      TodoState(); /* [
     Todo(title: 'Done', date: DateTime.utc(2022, 7, 9), done: false),
-  ];
+  ]; */
 
   late DateTime selectedDate;
 
   UnmodifiableListView<Todo> get filteredTodos {
-    return UnmodifiableListView(
-        todos.where((element) => element.date == selectedDate).toList());
+    return UnmodifiableListView(todoState.todos
+        .where((element) => element.date == selectedDate)
+        .toList());
   }
 
   @override
@@ -65,16 +68,16 @@ class _HomePageState extends State<HomePage> {
               child: TodoList(
                 todos: filteredTodos,
                 onUpdated: (index, action) {
-                  index = todos.indexOf(filteredTodos[index]);
+                  index = todoState.itemAt(filteredTodos[index]);
                   switch (action) {
                     case TodoAction.mark:
                       setState(() {
-                        todos[index].done = !todos[index].done;
+                        todoState.markItemDone(index);
                       });
                       break;
                     case TodoAction.delete:
                       setState(() {
-                        todos.removeAt(index);
+                        todoState.removeItem(index);
                       });
                       break;
                     case TodoAction.edit:
@@ -101,13 +104,13 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         final newTodo =
             Todo(done: false, date: selectedDate, title: todo!.content!);
-        todos.add(newTodo);
+        todoState.addItem(newTodo);
       });
     }
   }
 
   Future<void> _editTodo(int index) async {
-    final item = todos[index];
+    final item = todoState.todos[index];
 
     final result = await _showTodoModal(initial: item.title);
 
@@ -118,11 +121,11 @@ class _HomePageState extends State<HomePage> {
           date: item.date,
           done: item.done,
         );
-        todos[index] = newTodo;
+        todoState.updateItem(index, newTodo);
       });
     } else if (result?.result == Result.deleted) {
       setState(() {
-        todos.removeAt(index);
+        todoState.removeItem(index);
       });
     }
   }
@@ -147,15 +150,6 @@ class _HomePageState extends State<HomePage> {
     );
 
     return todo;
-
-    /* if (todo?.content != null) {
-      setState(() {
-        final newTodo = Todo(done: false, title: todo!.content!);
-        todos.add(newTodo);
-      });
-    }
-
-    print(todo?.content); */
   }
 
   Future<void> _selectTheme() async {
