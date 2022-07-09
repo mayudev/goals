@@ -5,7 +5,6 @@ import 'package:goals/theme.dart';
 import 'package:goals/widgets/calendar.dart';
 import 'package:goals/widgets/new_todo.dart';
 import 'package:goals/widgets/todo_list.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.updateTheme}) : super(key: key);
@@ -20,6 +19,16 @@ class _HomePageState extends State<HomePage> {
   final List<Todo> todos = [
     Todo(title: 'Done', done: false),
   ];
+
+  late DateTime selectedDate;
+
+  @override
+  void initState() {
+    final now = DateTime.now();
+    selectedDate = DateTime.utc(now.year, now.month, now.day);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +46,14 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           children: [
-            Calendar(),
+            Calendar(
+              selectedDate: selectedDate,
+              onSelected: (date) {
+                setState(() {
+                  selectedDate = date;
+                });
+              },
+            ),
             Expanded(
               child: TodoList(
                 todos: todos,
