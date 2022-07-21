@@ -7,6 +7,7 @@ import 'package:goals/model/todo.dart';
 import 'package:goals/model/todos.dart';
 import 'package:goals/theme.dart';
 import 'package:goals/widgets/calendar.dart';
+import 'package:goals/widgets/incomplete_indicator.dart';
 import 'package:goals/widgets/new_todo.dart';
 import 'package:goals/widgets/todo_list.dart';
 
@@ -23,11 +24,21 @@ class _HomePageState extends State<HomePage> {
   final todoState = TodoState();
 
   late DateTime selectedDate;
+  int today = 0;
+
+  int rightNow = DateTime.now().millisecondsSinceEpoch;
 
   UnmodifiableListView<Todo> get filteredTodos {
     return UnmodifiableListView(todoState.todos
         .where((element) => element.date == selectedDate)
         .toList());
+  }
+
+  int get incompleteTodos {
+    return todoState.todos
+        .where((element) =>
+            !element.done && element.date.millisecondsSinceEpoch < today)
+        .length;
   }
 
   @override
@@ -36,6 +47,7 @@ class _HomePageState extends State<HomePage> {
 
     final now = DateTime.now();
     selectedDate = DateTime.utc(now.year, now.month, now.day);
+    today = selectedDate.millisecondsSinceEpoch;
 
     super.initState();
   }
@@ -72,6 +84,8 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             ),
+            if (incompleteTodos > 0)
+              IncompleteIndicator(count: incompleteTodos),
             Expanded(
               child: TodoList(
                 todos: filteredTodos,
