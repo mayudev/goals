@@ -23,7 +23,7 @@ ThemeData buildDarkTheme() {
     primaryTextTheme: ThemeData.dark().textTheme.apply(fontFamily: fontFamily),
     brightness: Brightness.dark,
     appBarTheme: const AppBarTheme().copyWith(
-      backgroundColor: const Color(0xff723539),
+      backgroundColor: Colors.red[300]!,
       elevation: 1,
     ),
     colorScheme: const ColorScheme.dark().copyWith(
