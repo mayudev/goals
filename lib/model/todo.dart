@@ -14,7 +14,6 @@ class Todo {
   /// Covert a Todo into a Map
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'title': title,
       'date': date.toIso8601String(),
       'done': done ? 1 : 0,
