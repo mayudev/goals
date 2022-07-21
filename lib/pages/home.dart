@@ -141,22 +141,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<TodoUpdate?> _showTodoModal({String? initial}) async {
-    final TodoUpdate? todo = await showModalBottomSheet(
+    final TodoUpdate? todo = await showDialog(
       context: context,
-      elevation: 5,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12.0),
-          topRight: Radius.circular(12.0),
-        ),
+      builder: (BuildContext context) => NewTodo(
+        initial: initial,
       ),
-      builder: (context) {
-        return Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: NewTodo(initial: initial),
-        );
-      },
     );
 
     return todo;

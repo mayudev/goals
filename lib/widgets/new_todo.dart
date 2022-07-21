@@ -19,6 +19,7 @@ class _NewTodoState extends State<NewTodo> {
     super.dispose();
   }
 
+  @override
   void initState() {
     super.initState();
 
@@ -50,69 +51,49 @@ class _NewTodoState extends State<NewTodo> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.only(top: 20.0, left: 20.0, bottom: 20.0),
-          child: Text(
-            widget.initial == null ? 'Enter a new task' : 'Edit task',
-            style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                  fontSize: 20.0,
-                ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: TextField(
-            autofocus: true,
-            controller: _value,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.all(16.0),
-              border: OutlineInputBorder(
-                gapPadding: 6.0,
-              ),
-            ),
-            onSubmitted: (value) => submit(),
-            style: const TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
-        ),
-        _buildIconBar(),
-      ],
-    );
-  }
+    final dialogTitle =
+        widget.initial == null ? 'Enter a new task' : 'Edit task';
 
-  Widget _buildIconBar() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-      child: Row(
-        children: [
-          if (widget.initial != null)
-            IconButton(
-              onPressed: () => delete(),
-              icon: const Icon(Icons.delete_forever),
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          Expanded(
-            child: TextButton(
-              onPressed: () => submit(),
-              style: TextButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
-              ),
-              child: const Text(
-                'Save',
-                style: TextStyle(
-                  fontSize: 16.0,
+    return AlertDialog(
+        title: Text(dialogTitle),
+        content: Builder(builder: (context) {
+          var width = MediaQuery.of(context).size.width;
+
+          return SizedBox(
+            width: width,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 1.0),
+              child: TextField(
+                autofocus: true,
+                controller: _value,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.all(16.0),
+                  border: OutlineInputBorder(
+                    gapPadding: 6.0,
+                  ),
                 ),
+                onSubmitted: (value) => submit(),
               ),
             ),
+          );
+        }),
+        actions: [
+          Row(
+            children: [
+              if (widget.initial != null)
+                IconButton(
+                  color: Theme.of(context).colorScheme.primary,
+                  onPressed: () => delete(),
+                  icon: const Icon(Icons.delete_forever),
+                ),
+              Expanded(
+                child: TextButton(
+                  onPressed: () => submit(),
+                  child: const Text('Save'),
+                ),
+              )
+            ],
           )
-        ],
-      ),
-    );
+        ]);
   }
 }
