@@ -6,6 +6,7 @@ import 'package:goals/model/new_todo.dart';
 import 'package:goals/model/todo.dart';
 import 'package:goals/model/todos.dart';
 import 'package:goals/theme.dart';
+import 'package:goals/util/today.dart';
 import 'package:goals/widgets/calendar.dart';
 import 'package:goals/widgets/incomplete_indicator.dart';
 import 'package:goals/widgets/new_todo.dart';
@@ -45,8 +46,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     initTodos();
 
-    final now = DateTime.now();
-    selectedDate = DateTime.utc(now.year, now.month, now.day);
+    selectedDate = getToday();
     today = selectedDate.millisecondsSinceEpoch;
 
     super.initState();

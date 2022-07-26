@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goals/pages/overdue.dart';
+import 'package:goals/util/today.dart';
 
 class IncompleteIndicator extends StatelessWidget {
   const IncompleteIndicator(
@@ -12,14 +13,11 @@ class IncompleteIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstPart = count == 1 ? 'is' : 'are';
     final lastPart = count == 1 ? 'task' : 'tasks';
 
     return ListTile(
       onTap: () async {
-        final now = DateTime.now();
-        final today =
-            DateTime.utc(now.year, now.month, now.day).millisecondsSinceEpoch;
+        final today = getTodayTimestamp();
 
         final result = await Navigator.of(context).push(
             MaterialPageRoute(builder: (builder) => OverduePage(today: today)));
@@ -32,7 +30,7 @@ class IncompleteIndicator extends StatelessWidget {
       },
       title: Center(
         child: Text.rich(TextSpan(
-          text: 'There $firstPart ',
+          text: 'You have ',
           children: [
             TextSpan(
               text: count.toString(),
