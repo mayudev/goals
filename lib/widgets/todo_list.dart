@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:goals/model/new_todo.dart';
 import 'package:goals/model/todo.dart';
 import 'package:goals/widgets/tile.dart';
+import 'package:intl/intl.dart';
 
 class TodoList extends StatelessWidget {
   const TodoList(
@@ -18,6 +19,8 @@ class TodoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formatter = DateFormat.yMMMEd();
+
     return ListView.builder(
       itemCount: todos.length,
       itemBuilder: (context, index) {
@@ -35,7 +38,7 @@ class TodoList extends StatelessWidget {
             },
             child: TodoListTile(
                 title: item.title,
-                subtitle: displayDetails ? item.date.toString() : null,
+                subtitle: displayDetails ? formatter.format(item.date) : null,
                 done: item.done,
                 onChanged: () {
                   onUpdated(index, TodoAction.mark);
