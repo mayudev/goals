@@ -61,19 +61,16 @@ class _NewTodoState extends State<NewTodo> {
 
           return SizedBox(
             width: width,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 1.0),
-              child: TextField(
-                autofocus: true,
-                controller: _value,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(16.0),
-                  border: OutlineInputBorder(
-                    gapPadding: 6.0,
-                  ),
+            child: TextField(
+              autofocus: true,
+              controller: _value,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(16.0),
+                border: OutlineInputBorder(
+                  gapPadding: 6.0,
                 ),
-                onSubmitted: (value) => submit(),
               ),
+              onSubmitted: (value) => submit(),
             ),
           );
         }),
