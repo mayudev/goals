@@ -5,11 +5,16 @@ import 'package:goals/model/todo.dart';
 import 'package:goals/widgets/tile.dart';
 
 class TodoList extends StatelessWidget {
-  const TodoList({Key? key, required this.todos, required this.onUpdated})
+  const TodoList(
+      {Key? key,
+      required this.todos,
+      required this.onUpdated,
+      this.displayDetails = false})
       : super(key: key);
 
   final List<Todo> todos;
   final Function(int index, TodoAction action) onUpdated;
+  final bool displayDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +35,7 @@ class TodoList extends StatelessWidget {
             },
             child: TodoListTile(
                 title: item.title,
+                subtitle: displayDetails ? item.date.toString() : null,
                 done: item.done,
                 onChanged: () {
                   onUpdated(index, TodoAction.mark);

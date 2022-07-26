@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class TodoListTile extends StatelessWidget {
-  const TodoListTile({
-    Key? key,
-    required this.title,
-    required this.done,
-    required this.onChanged,
-  }) : super(key: key);
+  const TodoListTile(
+      {Key? key,
+      required this.title,
+      required this.done,
+      required this.onChanged,
+      this.subtitle})
+      : super(key: key);
 
   final String title;
+  final String? subtitle;
   final bool done;
   final VoidCallback onChanged;
 
@@ -20,6 +22,7 @@ class TodoListTile extends StatelessWidget {
         title,
         style: _checkboxStyle(done),
       ),
+      subtitle: subtitle != null ? Text(subtitle!) : null,
       value: done,
       checkboxShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25),

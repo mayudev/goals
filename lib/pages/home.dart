@@ -85,7 +85,14 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             if (incompleteTodos > 0)
-              IncompleteIndicator(count: incompleteTodos),
+              IncompleteIndicator(
+                count: incompleteTodos,
+                onReturn: (target) => {
+                  setState(() {
+                    selectedDate = target;
+                  })
+                },
+              ),
             Expanded(
               child: TodoList(
                 todos: filteredTodos,
