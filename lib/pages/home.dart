@@ -60,6 +60,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _jumpToToday() {
+    setState(() {
+      selectedDate = getToday();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +73,13 @@ class _HomePageState extends State<HomePage> {
         leading: const Icon(Icons.event_available_outlined),
         actions: [
           IconButton(
+            onPressed: () => _jumpToToday(),
+            tooltip: "Jump to today",
+            icon: const Icon(Icons.calendar_today),
+          ),
+          IconButton(
             onPressed: () => _selectTheme(),
+            tooltip: "Switch theme",
             icon: const Icon(Icons.brightness_6_outlined),
           )
         ],
