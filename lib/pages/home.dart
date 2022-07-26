@@ -78,6 +78,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Calendar(
               selectedDate: selectedDate,
+              todos: todoState.todos,
               onSelected: (date) {
                 setState(() {
                   selectedDate = date;
