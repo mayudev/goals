@@ -107,26 +107,28 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             Expanded(
-              child: TodoList(
-                todos: filteredTodos,
-                onUpdated: (index, action) {
-                  index = todoState.itemAt(filteredTodos[index]);
-                  switch (action) {
-                    case TodoAction.mark:
-                      setState(() {
-                        todoState.markItemDone(index);
-                      });
-                      break;
-                    case TodoAction.delete:
-                      setState(() {
-                        todoState.removeItem(index);
-                      });
-                      break;
-                    case TodoAction.edit:
-                      _editTodo(index);
-                  }
-                },
-              ),
+              child: filteredTodos.length > 0
+                  ? TodoList(
+                      todos: filteredTodos,
+                      onUpdated: (index, action) {
+                        index = todoState.itemAt(filteredTodos[index]);
+                        switch (action) {
+                          case TodoAction.mark:
+                            setState(() {
+                              todoState.markItemDone(index);
+                            });
+                            break;
+                          case TodoAction.delete:
+                            setState(() {
+                              todoState.removeItem(index);
+                            });
+                            break;
+                          case TodoAction.edit:
+                            _editTodo(index);
+                        }
+                      },
+                    )
+                  : Center(child: Text('No tasks for this day.')),
             )
           ],
         ),
