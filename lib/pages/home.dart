@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _addTodo() async {
-    final todo = await _showTodoModal();
+    final todo = await _showTodoModal(initialDate: selectedDate);
 
     if (todo?.content != null) {
       final newTodo =
@@ -157,7 +157,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> _editTodo(int index) async {
     final item = todoState.todos[index];
 
-    final result = await _showTodoModal(initial: item.title);
+    final result =
+        await _showTodoModal(initial: item.title, initialDate: item.date);
 
     if (result?.result == Result.created && result?.content != null) {
       setState(() {
@@ -176,11 +177,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<TodoUpdate?> _showTodoModal({String? initial}) async {
+  Future<TodoUpdate?> _showTodoModal(
+      {String? initial, DateTime? initialDate}) async {
     final TodoUpdate? todo = await showDialog(
       context: context,
       builder: (BuildContext context) => NewTodo(
         initial: initial,
+        initialDate: initialDate,
       ),
     );
 

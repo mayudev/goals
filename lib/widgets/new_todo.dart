@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:goals/model/new_todo.dart';
+import 'package:goals/util/today.dart';
+import 'package:intl/intl.dart';
 
 class NewTodo extends StatefulWidget {
-  const NewTodo({Key? key, this.initial}) : super(key: key);
+  const NewTodo({Key? key, this.initial, this.initialDate}) : super(key: key);
 
   final String? initial;
+  final DateTime? initialDate;
 
   @override
   State<NewTodo> createState() => _NewTodoState();
@@ -12,6 +15,7 @@ class NewTodo extends StatefulWidget {
 
 class _NewTodoState extends State<NewTodo> {
   final TextEditingController _value = TextEditingController();
+  late DateTime date;
 
   @override
   void dispose() {
@@ -26,6 +30,12 @@ class _NewTodoState extends State<NewTodo> {
     if (widget.initial != null) {
       _value.text = widget.initial!;
     }
+
+    date = widget.initialDate ?? getToday();
+  }
+
+  String get formattedDate {
+    return DateFormat.yMMMd().format(date);
   }
 
   void submit() {
@@ -56,21 +66,38 @@ class _NewTodoState extends State<NewTodo> {
 
     return AlertDialog(
         title: Text(dialogTitle),
+        buttonPadding: EdgeInsets.zero,
+        contentPadding:
+            const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
         content: Builder(builder: (context) {
           var width = MediaQuery.of(context).size.width;
 
           return SizedBox(
             width: width,
-            child: TextField(
-              autofocus: true,
-              controller: _value,
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(16.0),
-                border: OutlineInputBorder(
-                  gapPadding: 6.0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  autofocus: true,
+                  controller: _value,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(16.0),
+                    border: OutlineInputBorder(
+                      gapPadding: 6.0,
+                    ),
+                  ),
+                  onSubmitted: (value) => submit(),
                 ),
-              ),
-              onSubmitted: (value) => submit(),
+                ActionChip(
+                    backgroundColor: Theme.of(context).dialogBackgroundColor,
+                    avatar: Icon(
+                      Icons.schedule,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    label: Text(formattedDate),
+                    onPressed: () {})
+              ],
             ),
           );
         }),
