@@ -13,9 +13,11 @@ enum TodoAction {
 class TodoUpdate {
   final Result result;
   final String? content;
+  final DateTime? date;
 
   TodoUpdate({
     required this.result,
     this.content,
+    this.date,
   });
 }

@@ -145,8 +145,11 @@ class _HomePageState extends State<HomePage> {
     final todo = await _showTodoModal(initialDate: selectedDate);
 
     if (todo?.content != null) {
-      final newTodo =
-          Todo(id: 0, done: false, date: selectedDate, title: todo!.content!);
+      final newTodo = Todo(
+          id: 0,
+          done: false,
+          date: todo!.date ?? selectedDate,
+          title: todo.content!);
 
       setState(() {
         todoState.addItem(newTodo);
@@ -161,11 +164,13 @@ class _HomePageState extends State<HomePage> {
         await _showTodoModal(initial: item.title, initialDate: item.date);
 
     if (result?.result == Result.created && result?.content != null) {
+      print(result!.date);
+
       setState(() {
         final newTodo = Todo(
           id: item.id,
           title: result!.content!,
-          date: item.date,
+          date: result.date ?? item.date,
           done: item.done,
         );
         todoState.updateItem(index, newTodo);

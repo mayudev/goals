@@ -46,6 +46,7 @@ class _NewTodoState extends State<NewTodo> {
       TodoUpdate(
         result: Result.created,
         content: _value.text,
+        date: date,
       ),
     );
   }
@@ -96,7 +97,7 @@ class _NewTodoState extends State<NewTodo> {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     label: Text(formattedDate),
-                    onPressed: () {})
+                    onPressed: () => _showDatePicker())
               ],
             ),
           );
@@ -119,5 +120,22 @@ class _NewTodoState extends State<NewTodo> {
             ],
           )
         ]);
+  }
+
+  void _showDatePicker() async {
+    var newDate = await showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: DateTime.utc(2010, 1, 1),
+      lastDate: DateTime.utc(DateTime.now().year + 100, 12, 31),
+    );
+
+    if (newDate != null) {
+      newDate = DateTime.utc(newDate.year, newDate.month, newDate.day);
+
+      setState(() {
+        date = newDate!;
+      });
+    }
   }
 }
