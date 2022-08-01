@@ -124,11 +124,19 @@ class _NewTodoState extends State<NewTodo> {
 
   void _showDatePicker() async {
     var newDate = await showDatePicker(
-      context: context,
-      initialDate: date,
-      firstDate: DateTime.utc(2010, 1, 1),
-      lastDate: DateTime.utc(DateTime.now().year + 100, 12, 31),
-    );
+        context: context,
+        initialDate: date,
+        firstDate: DateTime.utc(2010, 1, 1),
+        lastDate: DateTime.utc(DateTime.now().year + 100, 12, 31),
+        builder: (context, child) {
+          return Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.dark(
+                  primary: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              child: child!);
+        });
 
     if (newDate != null) {
       newDate = DateTime.utc(newDate.year, newDate.month, newDate.day);
